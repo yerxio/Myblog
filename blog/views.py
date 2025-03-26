@@ -8,12 +8,24 @@ from django.contrib import messages
 from django.db import transaction
 from django.utils import timezone
 from taggit.models import Tag
+from django import forms
+
+# 创建表单
+class PostForm(forms.ModelForm):
+    class Meta:
+        model = Post
+        fields = ['title', 'category', 'content', 'featured_image', 'tags', 'status']
 
 class PostListView(ListView):
     model = Post
-    template_name = 'blog/post_list.html'
     context_object_name = 'posts'
     paginate_by = 10
+
+    def get_template_names(self):
+        # 如果是home URL，使用home.html模板
+        if self.request.path == '/home/':
+            return ['blog/home.html']
+        return ['blog/post_list.html']
 
     def get_queryset(self):
         queryset = Post.objects.filter(status='published')
@@ -42,6 +54,11 @@ class PostListView(ListView):
                 Q(content__icontains=search_query)
             )
 
+        # 确保所有文章都有有效的slug
+        for post in queryset:
+            if not post.slug:
+                post.save()  # 调用save方法生成slug
+        
         return queryset
 
     def get_context_data(self, **kwargs):
@@ -79,8 +96,8 @@ class PostDetailView(DetailView):
 
 class PostCreateView(LoginRequiredMixin, CreateView):
     model = Post
+    form_class = PostForm  # 使用自定义表单
     template_name = 'blog/post_form.html'
-    fields = ['title', 'category', 'content', 'featured_image', 'tags', 'status']
 
     def form_valid(self, form):
         try:
@@ -114,8 +131,8 @@ class PostCreateView(LoginRequiredMixin, CreateView):
 
 class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Post
+    form_class = PostForm  # 使用自定义表单
     template_name = 'blog/post_form.html'
-    fields = ['title', 'category', 'content', 'featured_image', 'tags', 'status']
 
     def form_valid(self, form):
         form.instance.author = self.request.user
@@ -151,3 +168,7 @@ class CategoryCreateView(LoginRequiredMixin, CreateView):
 
 def about(request):
     return render(request, 'blog/about.html')
+
+def test_article(request):
+    """测试文章页面，展示优化过的阅读体验"""
+    return render(request, 'blog/test_article.html')

@@ -46,7 +46,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'crispy_forms',
     'crispy_bootstrap5',
-    'ckeditor',
+    'tinymce',  # 替换CKEditor为TinyMCE
     'taggit',
     'debug_toolbar',
     
@@ -163,14 +163,31 @@ ACCOUNT_USERNAME_REQUIRED = True
 ACCOUNT_AUTHENTICATION_METHOD = 'username_email'
 ACCOUNT_EMAIL_VERIFICATION = 'optional'
 
-# CKEditor settings
-CKEDITOR_UPLOAD_PATH = 'uploads/'
-CKEDITOR_CONFIGS = {
-    'default': {
-        'toolbar': 'full',
-        'height': 300,
-        'width': '100%',
-    },
+# TinyMCE设置
+TINYMCE_DEFAULT_CONFIG = {
+    'height': 500,
+    'width': '100%',
+    'menubar': True,
+    'plugins': '''
+        advlist autolink lists link image charmap print preview anchor
+        searchreplace visualblocks code fullscreen
+        insertdatetime media table paste code help wordcount spellchecker
+        emoticons
+    ''',
+    'toolbar': '''
+        undo redo | formatselect | bold italic backcolor |
+        alignleft aligncenter alignright alignjustify |
+        bullist numlist outdent indent | removeformat |
+        link image media | code | emoticons | fullscreen | help
+    ''',
+    'cleanup_on_startup': True,
+    'custom_undo_redo_levels': 20,
+    'theme': 'silver',
+    'language': 'zh_CN',
+    'branding': False,
+    'resize': 'both',
+    'content_css': 'dark',  # 使用暗色主题
+    'skin': 'oxide-dark',   # 使用暗色主题
 }
 
 # Custom user model

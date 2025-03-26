@@ -2,16 +2,104 @@
 {% load crispy_forms_tags %}
 
 {% block title %}
-    {% if form.instance.pk %}编辑文章{% else %}写文章{% endif %} | 我的博客
+    {% if form.instance.pk %}编辑文章{% else %}写文章{% endif %} | 妙手博客
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* 编辑器页面特定样式 */
+    .editor-container {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 1.5rem;
+        background-color: rgba(30, 30, 40, 0.7);
+        border-radius: 8px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+    }
+    
+    /* 调整表单布局 */
+    .form-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 15px;
+        margin-bottom: 15px;
+    }
+    
+    .form-col-large {
+        flex: 2;
+        min-width: 300px;
+    }
+    
+    .form-col-small {
+        flex: 1;
+        min-width: 200px;
+    }
+    
+    /* 编辑区域更加突出 */
+    #div_id_content {
+        margin-top: 1rem;
+        padding: 1rem;
+        background-color: rgba(20, 20, 30, 0.5);
+        border-radius: 5px;
+        border-left: 3px solid var(--terminal-green);
+    }
+    
+    /* 让TinyMCE编辑器更美观 */
+    .tox-tinymce {
+        border-radius: 5px !important;
+        border-color: var(--terminal-green) !important;
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+        min-height: 500px !important;
+    }
+    
+    /* 控制编辑区域尺寸 */
+    .editing-area {
+        margin-top: 1.5rem;
+    }
+    
+    /* 元数据区域样式 */
+    .metadata-section {
+        background-color: rgba(25, 25, 35, 0.5);
+        padding: 1rem;
+        border-radius: 5px;
+        margin-bottom: 1.5rem;
+    }
+    
+    .metadata-section h3 {
+        color: var(--terminal-green);
+        font-size: 1.1rem;
+        margin-bottom: 1rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        padding-bottom: 0.5rem;
+    }
+    
+    /* 优化提交按钮 */
+    .form-actions {
+        margin-top: 2rem;
+        display: flex;
+        gap: 1rem;
+    }
+    
+    /* 分类快速创建区域 */
+    .category-quick-create {
+        background-color: rgba(20, 20, 30, 0.5);
+        padding: 0.8rem;
+        border-radius: 5px;
+        margin-top: 0.5rem;
+        border-left: 2px solid #0088ff;
+        font-size: 0.9rem;
+    }
+</style>
 {% endblock %}
 
 {% block content %}
-    <h1 class="mb-4 terminal-title">
-        > {% if form.instance.pk %}编辑文章{% else %}写文章{% endif %}
-    </h1>
+    <div class="container-fluid mt-4">
+        <div class="editor-container">
+            <h1 class="mb-4 terminal-title">
+                > {% if form.instance.pk %}编辑文章{% else %}写文章{% endif %}
+            </h1>
 
-    <div class="card terminal-card">
-        <div class="card-body">
             {% if form.errors %}
             <div class="alert terminal-alert alert-danger">
                 <h4><i class="bi bi-exclamation-triangle"></i> 表单提交错误</h4>
@@ -30,16 +118,51 @@
             
             <form method="post" enctype="multipart/form-data" class="mb-4">
                 {% csrf_token %}
-                {{ form|crispy }}
-                <div class="alert terminal-alert alert-info">
-                    <i class="bi bi-info-circle"></i> 提示：文章默认会以"已发布"状态保存，可以修改为"草稿"状态。
+                
+                <div class="metadata-section">
+                    <h3><i class="bi bi-info-circle"></i> 文章信息</h3>
+                    <div class="form-row">
+                        <div class="form-col-large">
+                            {{ form.title|as_crispy_field }}
+                        </div>
+                        <div class="form-col-small">
+                            {{ form.category|as_crispy_field }}
+                            <div class="category-quick-create">
+                                <a href="{% url 'blog:category_create' %}" target="_blank" class="text-info">
+                                    <i class="bi bi-plus-circle"></i> 创建新分类
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-col-large">
+                            {{ form.tags|as_crispy_field }}
+                        </div>
+                        <div class="form-col-small">
+                            {{ form.status|as_crispy_field }}
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-col-large">
+                            {{ form.featured_image|as_crispy_field }}
+                        </div>
+                    </div>
                 </div>
-                <button type="submit" class="btn terminal-btn">
-                    > {% if form.instance.pk %}保存修改{% else %}发布文章{% endif %}
-                </button>
-                <a href="{% url 'blog:post_list' %}" class="btn terminal-btn">
-                    > 取消
-                </a>
+                
+                <div class="editing-area">
+                    {{ form.content|as_crispy_field }}
+                </div>
+                
+                <div class="form-actions">
+                    <button type="submit" class="btn terminal-btn">
+                        > {% if form.instance.pk %}保存修改{% else %}发布文章{% endif %}
+                    </button>
+                    <a href="{% url 'blog:post_list' %}" class="btn terminal-btn">
+                        > 取消
+                    </a>
+                </div>
             </form>
         </div>
     </div>
@@ -47,4 +170,83 @@
 
 {% block extra_js %}
     {{ form.media }}
+    <script>
+        // 确保TinyMCE在暗色模式下更好看
+        document.addEventListener('DOMContentLoaded', function() {
+            if (typeof tinymce !== 'undefined') {
+                tinymce.on('AddEditor', function(e) {
+                    e.editor.on('init', function() {
+                        // 使编辑器内容区域适应暗色主题
+                        var contentCSS = `
+                            body {
+                                background-color: #1e1e28 !important;
+                                color: #e0e0e0 !important;
+                                font-family: 'Share Tech Mono', monospace;
+                                padding: 1rem !important;
+                            }
+                            p {
+                                margin-bottom: 1rem;
+                                line-height: 1.6;
+                            }
+                            h1, h2, h3, h4, h5, h6 {
+                                color: #00ff9d !important;
+                                margin-top: 1.5rem;
+                                margin-bottom: 1rem;
+                            }
+                            a {
+                                color: #00b8ff !important;
+                            }
+                            code {
+                                background-color: #2a2a38 !important;
+                                padding: 0.2em 0.4em;
+                                border-radius: 3px;
+                                font-family: 'Courier New', monospace;
+                            }
+                            pre {
+                                background-color: #2a2a38 !important;
+                                padding: 1rem;
+                                border-radius: 5px;
+                                border-left: 3px solid #00ff9d;
+                                overflow-x: auto;
+                            }
+                            blockquote {
+                                border-left: 4px solid #00ff9d !important;
+                                padding-left: 1rem;
+                                color: #b0b0b0 !important;
+                                font-style: italic;
+                                margin: 1rem 0;
+                            }
+                            table {
+                                border-collapse: collapse;
+                                width: 100%;
+                                margin: 1rem 0;
+                            }
+                            th, td {
+                                border: 1px solid #3a3a4a !important;
+                                padding: 0.5rem;
+                            }
+                            th {
+                                background-color: #2a2a38 !important;
+                            }
+                            img {
+                                max-width: 100%;
+                                height: auto;
+                                border-radius: 5px;
+                            }
+                            ul, ol {
+                                padding-left: 2rem;
+                            }
+                            li {
+                                margin-bottom: 0.5rem;
+                            }
+                        `;
+                        
+                        // 将样式添加到编辑器内容区
+                        var styleElm = e.editor.dom.create('style', {type: 'text/css'}, contentCSS);
+                        e.editor.getDoc().getElementsByTagName('head')[0].appendChild(styleElm);
+                    });
+                });
+            }
+        });
+    </script>
 {% endblock %} 

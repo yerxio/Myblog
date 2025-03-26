@@ -1,66 +1,78 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block title %}{{ post.title }} | 我的博客{% endblock %}
 
 {% block content %}
-    <article class="blog-post">
-        <h1 class="mb-4">{{ post.title }}</h1>
-        
-        <p class="text-muted mb-4">
-            <small>
-                <i class="bi bi-person"></i> {{ post.author.username }} |
-                <i class="bi bi-calendar"></i> {{ post.created|date:"Y-m-d H:i" }} |
-                <i class="bi bi-folder"></i> {{ post.category.name }} |
-                <i class="bi bi-eye"></i> {{ post.views }} 次浏览
-                {% if user == post.author %}
-                    |
-                    <a href="{% url 'blog:post_update' post.slug %}" class="text-decoration-none">
-                        <i class="bi bi-pencil"></i> 编辑
-                    </a>
-                    |
-                    <a href="{% url 'blog:post_delete' post.slug %}" class="text-decoration-none text-danger">
-                        <i class="bi bi-trash"></i> 删除
-                    </a>
-                {% endif %}
-            </small>
-        </p>
-
-        {% if post.featured_image %}
-            <img src="{{ post.featured_image.url }}" class="img-fluid rounded mb-4" alt="{{ post.title }}">
-        {% endif %}
-
-        <div class="blog-content mb-4">
-            {{ post.content|safe }}
-        </div>
-
-        {% if post.tags.all %}
-            <div class="mb-4">
-                <h5>标签:</h5>
-                {% for tag in post.tags.all %}
-                    <a href="{% url 'blog:post_list_by_tag' tag.name %}" class="badge bg-secondary text-decoration-none">
-                        {{ tag.name }}
-                    </a>
-                {% endfor %}
-            </div>
-        {% endif %}
-    </article>
-
-    <section class="comments mt-5">
-        <h3>评论 ({{ comments.count }})</h3>
-        {% for comment in comments %}
-            <div class="card mb-3">
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="terminal-card mb-4">
                 <div class="card-body">
-                    <h6 class="card-subtitle mb-2 text-muted">{{ comment.name }} 说:</h6>
-                    <p class="card-text">{{ comment.body }}</p>
-                    <p class="card-text">
-                        <small class="text-muted">{{ comment.created|date:"Y-m-d H:i" }}</small>
+                    <h1 class="card-title glitch-container">
+                        <span class="glitch-text" data-text="{{ post.title }}">{{ post.title }}</span>
+                        <div class="glitch-scanlines"></div>
+                        <div class="glitch-flash"></div>
+                    </h1>
+                    <p class="card-text text-muted terminal-meta">
+                        <small>
+                            <i class="bi bi-person"></i> {{ post.author.username }} |
+                            <i class="bi bi-calendar"></i> {{ post.created|date:"Y-m-d" }} |
+                            <i class="bi bi-folder"></i> {{ post.category.name }} |
+                            <i class="bi bi-eye"></i> {{ post.views }} 次浏览
+                            {% if user == post.author %}
+                                |
+                                <a href="{% url 'blog:post_update' post.slug %}" class="text-decoration-none">
+                                    <i class="bi bi-pencil"></i> 编辑
+                                </a>
+                                |
+                                <a href="{% url 'blog:post_delete' post.slug %}" class="text-decoration-none text-danger">
+                                    <i class="bi bi-trash"></i> 删除
+                                </a>
+                            {% endif %}
+                        </small>
                     </p>
+                    {% if post.featured_image %}
+                    <div class="featured-image-container noise-bg">
+                        <img src="{{ post.featured_image.url }}" class="img-fluid mb-3" alt="{{ post.title }}">
+                    </div>
+                    {% endif %}
+                    <div class="card-text mb-4 terminal-content noise-bg">
+                        {{ post.content|safe }}
+                    </div>
+
+                    {% if post.tags.all %}
+                        <div class="mb-4">
+                            <h5>标签:</h5>
+                            {% for tag in post.tags.all %}
+                                <a href="{% url 'blog:post_list_by_tag' tag.name %}" class="badge bg-secondary text-decoration-none">
+                                    {{ tag.name }}
+                                </a>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
                 </div>
             </div>
-        {% empty %}
-            <div class="alert alert-info">
-                暂无评论
-            </div>
-        {% endfor %}
-    </section>
+
+            <section class="comments mt-5">
+                <h3>评论 ({{ comments.count }})</h3>
+                {% for comment in comments %}
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <h6 class="card-subtitle mb-2 text-muted">{{ comment.name }} 说:</h6>
+                            <p class="card-text">{{ comment.body }}</p>
+                            <p class="card-text">
+                                <small class="text-muted">{{ comment.created|date:"Y-m-d H:i" }}</small>
+                            </p>
+                        </div>
+                    </div>
+                {% empty %}
+                    <div class="alert alert-info">
+                        暂无评论
+                    </div>
+                {% endfor %}
+            </section>
+        </div>
+    </div>
+</div>
 {% endblock %} 

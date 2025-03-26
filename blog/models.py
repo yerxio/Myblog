@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.urls import reverse
-from ckeditor.fields import RichTextField
+from tinymce.models import HTMLField
 from taggit.managers import TaggableManager
 from django.utils.text import slugify
 
@@ -56,7 +56,7 @@ class Post(models.Model):
         related_name='posts',
         verbose_name='分类'
     )
-    content = RichTextField('内容')
+    content = HTMLField('内容')
     featured_image = models.ImageField(
         '特色图片',
         upload_to='blog_images/%Y/%m/%d/',

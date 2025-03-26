@@ -9,19 +9,70 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <!-- 添加故障效果CSS -->
+    <style>
+        .noise-container {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .noise-effect {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .noise-effect:before, .noise-effect:after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.01);
+            opacity: 0;
+        }
+        
+        /* 添加基础的噪点动画样式 */
+        @keyframes noise-anim {
+            0% { clip-path: inset(29% 0 25% 0); }
+            5% { clip-path: inset(9% 0 38% 0); }
+            10% { clip-path: inset(96% 0 1% 0); }
+            15% { clip-path: inset(75% 0 23% 0); }
+            20% { clip-path: inset(46% 0 50% 0); }
+            25% { clip-path: inset(3% 0 46% 0); }
+            30% { clip-path: inset(82% 0 31% 0); }
+            35% { clip-path: inset(88% 0 53% 0); }
+            40% { clip-path: inset(91% 0 14% 0); }
+            45% { clip-path: inset(25% 0 69% 0); }
+            50% { clip-path: inset(50% 0 42% 0); }
+            55% { clip-path: inset(67% 0 71% 0); }
+            60% { clip-path: inset(67% 0 1% 0); }
+            65% { clip-path: inset(69% 0 26% 0); }
+            70% { clip-path: inset(73% 0 25% 0); }
+            75% { clip-path: inset(84% 0 27% 0); }
+            80% { clip-path: inset(4% 0 90% 0); }
+            85% { clip-path: inset(9% 0 83% 0); }
+            90% { clip-path: inset(28% 0 40% 0); }
+            95% { clip-path: inset(90% 0 29% 0); }
+            100% { clip-path: inset(23% 0 55% 0); }
+        }
+    </style>
     {% block extra_css %}{% endblock %}
 </head>
-<body class="hacker-theme d-flex flex-column min-vh-100">
+<body class="hacker-theme d-flex flex-column min-vh-100" style="--before-z-index: -1000; --after-z-index: -2000;">
     <!-- 调整粒子背景容器高度 -->
-    <div id="particles-js" style="position: absolute; width: 100%; height: 60px; top: 0; left: 0; z-index: 1; pointer-events: none;"></div>
+    <div id="particles-js" style="position: absolute; width: 100%; height: 60px; top: 0; left: 0; z-index: -5; pointer-events: none;"></div>
     
-    <nav class="navbar navbar-expand-lg" style="position: relative;">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
-            <a class="navbar-brand" href="{% url 'blog:post_list' %}" data-text="妙手博客" style="position: relative; z-index: 2;">妙手博客</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" style="position: relative; z-index: 2;">
+            <a class="navbar-brand glitch-container" href="{% url 'blog:post_list' %}">
+                <span class="glitch-text" data-text="妙手博客">妙手博客</span>
+                <div class="glitch-scanlines"></div>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse" id="navbarNav" style="position: relative; z-index: 2;">
+            <div class="collapse navbar-collapse" id="navbarNav" style="position: relative; z-index: 1040;">
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item">
                         <a class="nav-link terminal-link" href="{% url 'blog:post_list' %}">> 首页</a>
@@ -39,10 +90,10 @@
                 <ul class="navbar-nav ms-3">
                     {% if user.is_authenticated %}
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle terminal-link" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">
+                        <a class="nav-link terminal-link dropdown-toggle" href="#" id="navbarDropdown">
                             > {{ user.username }}
                         </a>
-                        <ul class="dropdown-menu terminal-dropdown">
+                        <ul class="dropdown-menu terminal-dropdown" id="userMenu">
                             <li><a class="dropdown-item terminal-link" href="{% url 'account_logout' %}">> 退出</a></li>
                         </ul>
                     </li>
@@ -212,5 +263,129 @@
       });
     </script>
     {% block extra_js %}{% endblock %}
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 闪烁故障效果增强
+            const glitchElements = document.querySelectorAll('.glitch-text');
+            
+            // 随机闪烁增强，但不包含抖动效果
+            function enhanceGlitchEffect() {
+                glitchElements.forEach(el => {
+                    // 随机决定是否触发强烈闪烁
+                    if (Math.random() > 0.97) {
+                        el.style.animation = 'none';
+                        el.offsetHeight; // 重绘
+                        el.style.animation = 'text-flicker 0.5s linear';
+                        
+                        // 短暂改变颜色但不改变位置
+                        if (Math.random() > 0.5) {
+                            el.style.color = 'var(--glitch-primary)';
+                            setTimeout(() => {
+                                el.style.color = '';
+                            }, 100);
+                        }
+                    }
+                });
+                
+                // 全局强烈闪烁
+                if (Math.random() > 0.98) {
+                    const flashElements = document.querySelectorAll('.glitch-flash');
+                    flashElements.forEach(flash => {
+                        flash.style.opacity = 0.7;
+                        setTimeout(() => {
+                            flash.style.opacity = 0;
+                        }, 50);
+                    });
+                }
+                
+                // 定期调用，实现随机效果
+                setTimeout(enhanceGlitchEffect, Math.random() * 2000 + 1000);
+            }
+            
+            // 启动增强效果
+            enhanceGlitchEffect();
+            
+            // 鼠标悬停增强，不含位移变形
+            glitchElements.forEach(el => {
+                const container = el.closest('.glitch-container');
+                if (container) {
+                    container.addEventListener('mouseenter', () => {
+                        el.style.animation = 'text-flicker 0.3s linear infinite';
+                        
+                        // 增加扫描线效果但不添加扭曲
+                        const scanlines = container.querySelector('.glitch-scanlines');
+                        if (scanlines) {
+                            scanlines.style.opacity = '0.5';
+                        }
+                    });
+                    
+                    container.addEventListener('mouseleave', () => {
+                        el.style.animation = '';
+                        
+                        // 恢复正常
+                        const scanlines = container.querySelector('.glitch-scanlines');
+                        if (scanlines) {
+                            scanlines.style.opacity = '0.3';
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+
+    <script>
+        // 专门解决下拉菜单被覆盖的问题
+        document.addEventListener('DOMContentLoaded', function() {
+            // 获取导航栏下拉菜单元素
+            const userDropdown = document.getElementById('navbarDropdown');
+            const dropdownMenu = document.getElementById('userMenu');
+            
+            if (userDropdown && dropdownMenu) {
+                // 直接添加内联样式，确保最高优先级
+                dropdownMenu.setAttribute('style', 'position: fixed !important; z-index: 99999 !important; min-width: 120px !important; font-size: 0.85rem !important;');
+                
+                // 点击用户名切换菜单
+                userDropdown.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    
+                    // 切换菜单显示状态
+                    if (dropdownMenu.style.display === 'block') {
+                        dropdownMenu.style.display = 'none';
+                        document.body.classList.remove('dropdown-active');
+                    } else {
+                        // 显示菜单
+                        dropdownMenu.style.display = 'block';
+                        
+                        // 确保菜单显示位置正确
+                        const rect = userDropdown.getBoundingClientRect();
+                        dropdownMenu.style.top = (rect.bottom + window.scrollY) + 'px';
+                        dropdownMenu.style.left = (rect.left + window.scrollX) + 'px';
+                        dropdownMenu.style.zIndex = '99999';
+                        
+                        // 临时禁用所有可能干扰的伪元素
+                        document.body.style.setProperty('--before-z-index', '-9999');
+                        document.body.style.setProperty('--after-z-index', '-9999');
+                        document.body.classList.add('dropdown-active');
+                    }
+                });
+                
+                // 点击其他区域关闭菜单
+                document.addEventListener('click', function(e) {
+                    if (e.target !== userDropdown && !userDropdown.contains(e.target) && 
+                        e.target !== dropdownMenu && !dropdownMenu.contains(e.target)) {
+                        dropdownMenu.style.display = 'none';
+                        document.body.classList.remove('dropdown-active');
+                    }
+                });
+                
+                // 确保点击菜单内部链接不会关闭菜单
+                dropdownMenu.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                });
+            }
+        });
+    </script>
 </body>
 </html> 

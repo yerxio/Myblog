@@ -1,0 +1,280 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}测试文章：优化阅读体验 | 妙手博客{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* 优化文章阅读体验的样式 */
+    .article-container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 2rem 1.5rem;
+        background-color: rgba(30, 30, 40, 0.7);
+        border-radius: 8px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+    }
+    
+    .article-title {
+        font-size: 2.5rem;
+        margin-bottom: 1.5rem;
+        color: var(--terminal-green);
+        text-shadow: 0 0 10px rgba(0, 255, 157, 0.3);
+        letter-spacing: 1px;
+    }
+    
+    .article-meta {
+        margin-bottom: 2rem;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid var(--terminal-border);
+        color: var(--terminal-cyan);
+        font-size: 0.9rem;
+    }
+    
+    .article-content {
+        font-size: 1.1rem;
+        line-height: 1.8;
+        color: var(--terminal-text);
+        margin-bottom: 2rem;
+    }
+    
+    .article-content p {
+        margin-bottom: 1.5rem;
+    }
+    
+    .article-content h2 {
+        font-size: 1.8rem;
+        margin: 2.5rem 0 1.2rem;
+        color: var(--terminal-cyan);
+    }
+    
+    .article-content h3 {
+        font-size: 1.5rem;
+        margin: 2rem 0 1rem;
+        color: var(--terminal-green);
+    }
+    
+    .article-content ul, .article-content ol {
+        margin-bottom: 1.5rem;
+        padding-left: 1.5rem;
+    }
+    
+    .article-content li {
+        margin-bottom: 0.5rem;
+    }
+    
+    .article-content blockquote {
+        border-left: 4px solid var(--terminal-green);
+        padding-left: 1rem;
+        margin-left: 0;
+        margin-right: 0;
+        margin-bottom: 1.5rem;
+        font-style: italic;
+        color: var(--terminal-cyan);
+    }
+    
+    .article-content code {
+        background-color: rgba(0, 0, 0, 0.3);
+        padding: 0.2rem 0.4rem;
+        border-radius: 3px;
+        font-family: 'Share Tech Mono', monospace;
+        color: var(--terminal-green);
+    }
+    
+    .article-content pre {
+        background-color: rgba(0, 0, 0, 0.3);
+        padding: 1rem;
+        border-radius: 5px;
+        overflow-x: auto;
+        margin-bottom: 1.5rem;
+    }
+    
+    .article-content img {
+        max-width: 100%;
+        height: auto;
+        margin: 1.5rem 0;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    }
+    
+    .article-content a {
+        color: var(--terminal-cyan);
+        text-decoration: underline;
+        transition: all 0.3s ease;
+    }
+    
+    .article-content a:hover {
+        color: var(--terminal-green);
+        text-shadow: 0 0 5px rgba(0, 255, 157, 0.5);
+    }
+    
+    /* 表格样式 */
+    .article-content table {
+        width: 100%;
+        margin-bottom: 1.5rem;
+        border-collapse: collapse;
+    }
+    
+    .article-content th,
+    .article-content td {
+        padding: 0.75rem;
+        border: 1px solid var(--terminal-border);
+    }
+    
+    .article-content th {
+        background-color: rgba(0, 255, 157, 0.1);
+        color: var(--terminal-green);
+    }
+    
+    /* 底部导航 */
+    .article-navigation {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 3rem;
+        padding-top: 1.5rem;
+        border-top: 1px solid var(--terminal-border);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="article-container">
+        <h1 class="article-title glitch-container">
+            <span class="glitch-text" data-text="优化阅读体验：打造完美博客文章页面">优化阅读体验：打造完美博客文章页面</span>
+        </h1>
+        
+        <div class="article-meta">
+            <span><i class="bi bi-person"></i> 妙手博主</span> | 
+            <span><i class="bi bi-calendar"></i> 2023-03-26</span> | 
+            <span><i class="bi bi-folder"></i> 网站设计</span> | 
+            <span><i class="bi bi-eye"></i> 42 次浏览</span>
+        </div>
+        
+        <div class="article-content">
+            <p>在数字内容爆炸的时代，提供良好的阅读体验对于任何博客或内容网站来说都至关重要。优秀的阅读体验不仅能够让读者更愉悦地消费内容，还能增加用户停留时间，降低跳出率，提高内容的转化效果。本文将分享如何通过设计和技术手段优化博客文章页面，打造理想的阅读体验。</p>
+            
+            <h2>一、排版与布局：读者体验的基础</h2>
+            
+            <p>排版和布局是阅读体验的基础。良好的排版能让内容更易读，降低读者的认知负担。以下是几个关键点：</p>
+            
+            <h3>1.1 适当的字体大小与行高</h3>
+            
+            <p>对于网页内容，建议正文字体大小至少为16px（移动设备可适当调整），行高设置为字体大小的1.5-1.8倍。这样的设置使得文本既不会过于拥挤，也不会过于松散，有助于读者顺畅地阅读长篇内容。</p>
+            
+            <blockquote>
+                研究表明，适当增加行高可以提高阅读速度和理解力，特别是对于那些需要长时间阅读的文章。
+            </blockquote>
+            
+            <h3>1.2 合理的内容宽度</h3>
+            
+            <p>内容区域不宜过宽。理想的阅读宽度通常在700-800像素之间，这样读者的眼睛不需要大幅度移动就能完成一行的阅读，减少阅读疲劳。对于较宽的屏幕，可以通过设置最大宽度和居中来优化布局。</p>
+            
+            <h3>1.3 清晰的层次结构</h3>
+            
+            <p>使用标题（h1、h2、h3等）创建清晰的内容层次结构，帮助读者理解内容组织方式。每个部分之间保持适当的间距，使页面呼吸感更强。</p>
+            
+            <p>列表是组织信息的有效方式，例如：</p>
+            
+            <ul>
+                <li>使用无序列表展示并列的要点</li>
+                <li>为复杂列表添加适当的缩进</li>
+                <li>确保列表项之间有足够的空间</li>
+            </ul>
+            
+            <h2>二、颜色与对比度：提升阅读舒适度</h2>
+            
+            <p>颜色和对比度直接影响阅读的舒适程度，尤其对于需要长时间阅读的用户来说至关重要。</p>
+            
+            <h3>2.1 文本与背景的对比</h3>
+            
+            <p>文本与背景之间需要有足够的对比度，以确保所有用户（包括视力障碍者）都能轻松阅读。根据WCAG 2.0标准，正文文本与背景的对比度比例应至少为4.5:1。</p>
+            
+            <p>在暗色主题中，可以避免使用纯白文本（如使用浅灰色代替），减少眼睛疲劳。</p>
+            
+            <h3>2.2 链接的辨识度</h3>
+            
+            <p>确保链接文本与普通文本有明显区别，通常可以使用不同颜色、下划线或其他视觉提示。链接的悬停状态应该有明显的变化，提供良好的交互反馈。</p>
+            
+            <h2>三、响应式设计：适应多种设备</h2>
+            
+            <p>现代用户使用多种设备访问内容，响应式设计确保在不同屏幕尺寸上都能提供良好体验。</p>
+            
+            <h3>3.1 流动布局</h3>
+            
+            <p>使用相对单位（如百分比、em、rem）而非绝对单位（如像素）设置元素尺寸，确保布局能根据屏幕大小自适应调整。</p>
+            
+            <h3>3.2 图片与多媒体内容</h3>
+            
+            <p>使用CSS的max-width属性确保图片不会溢出容器：</p>
+            
+            <pre><code>img {
+  max-width: 100%;
+  height: auto;
+}</code></pre>
+            
+            <p>对于大型多媒体内容，考虑根据设备性能与屏幕尺寸条件加载不同分辨率的资源。</p>
+            
+            <h2>四、功能性增强：提升阅读体验</h2>
+            
+            <p>除了基本的排版和设计外，一些功能性的增强可以进一步提升阅读体验。</p>
+            
+            <h3>4.1 目录导航</h3>
+            
+            <p>对于长文章，添加一个固定位置的目录，帮助读者快速导航到感兴趣的部分。这在技术文档或教程类内容中特别有用。</p>
+            
+            <h3>4.2 阅读进度指示</h3>
+            
+            <p>添加阅读进度条，让读者了解自己在文章中的位置，这对于长文章尤其有价值。</p>
+            
+            <h3>4.3 评论与互动区</h3>
+            
+            <p>设计友好的评论区域，鼓励读者参与讨论，同时确保评论区不会分散对主要内容的注意力。</p>
+            
+            <h2>五、性能优化：消除阅读障碍</h2>
+            
+            <p>页面加载速度直接影响用户体验，缓慢的加载会导致读者流失。</p>
+            
+            <table>
+                <tr>
+                    <th>优化措施</th>
+                    <th>预期效果</th>
+                </tr>
+                <tr>
+                    <td>图片压缩与延迟加载</td>
+                    <td>减少初始加载时间</td>
+                </tr>
+                <tr>
+                    <td>代码精简与压缩</td>
+                    <td>减少资源大小</td>
+                </tr>
+                <tr>
+                    <td>使用CDN</td>
+                    <td>加快资源传输速度</td>
+                </tr>
+                <tr>
+                    <td>优化关键渲染路径</td>
+                    <td>提升页面渲染速度</td>
+                </tr>
+            </table>
+            
+            <p>通过实施这些优化措施，可以确保用户在打开页面后能够立即开始阅读，而不是等待内容加载。</p>
+            
+            <h2>结语</h2>
+            
+            <p>优化阅读体验是一个持续改进的过程。通过关注排版、颜色、响应式设计、功能增强和性能优化，可以为读者创造舒适、高效的阅读环境，提升内容价值，增强用户黏性。</p>
+            
+            <p>最重要的是，始终从读者角度出发，定期收集用户反馈，不断完善。只有真正理解了读者需求，才能打造出他们喜爱的内容平台。</p>
+        </div>
+        
+        <div class="article-navigation">
+            <a href="#" class="btn btn-outline-primary glitch-container">
+                <span class="glitch-text" data-text="< 上一篇">< 上一篇</span>
+            </a>
+            <a href="#" class="btn btn-outline-primary glitch-container">
+                <span class="glitch-text" data-text="下一篇 >">下一篇 ></span>
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %} 
