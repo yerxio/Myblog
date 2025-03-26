@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+    {% if form.instance.pk %}编辑文章{% else %}写文章{% endif %} | 我的博客
+{% endblock %}
+
+{% block content %}
+    <h1 class="mb-4 terminal-title">
+        > {% if form.instance.pk %}编辑文章{% else %}写文章{% endif %}
+    </h1>
+
+    <div class="card terminal-card">
+        <div class="card-body">
+            {% if form.errors %}
+            <div class="alert terminal-alert alert-danger">
+                <h4><i class="bi bi-exclamation-triangle"></i> 表单提交错误</h4>
+                <ul>
+                    {% for field in form %}
+                        {% for error in field.errors %}
+                            <li>{{ field.label }}: {{ error }}</li>
+                        {% endfor %}
+                    {% endfor %}
+                    {% for error in form.non_field_errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+            
+            <form method="post" enctype="multipart/form-data" class="mb-4">
+                {% csrf_token %}
+                {{ form|crispy }}
+                <div class="alert terminal-alert alert-info">
+                    <i class="bi bi-info-circle"></i> 提示：文章默认会以"已发布"状态保存，可以修改为"草稿"状态。
+                </div>
+                <button type="submit" class="btn terminal-btn">
+                    > {% if form.instance.pk %}保存修改{% else %}发布文章{% endif %}
+                </button>
+                <a href="{% url 'blog:post_list' %}" class="btn terminal-btn">
+                    > 取消
+                </a>
+            </form>
+        </div>
+    </div>
+{% endblock %}
+
+{% block extra_js %}
+    {{ form.media }}
+{% endblock %} 

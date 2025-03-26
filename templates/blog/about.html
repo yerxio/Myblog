@@ -1,0 +1,147 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}> 关于我{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card terminal-card mb-4">
+                <div class="card-header terminal-header">
+                    <h1 class="h3 mb-0">> 关于我</h1>
+                </div>
+                <div class="card-body">
+                    <div class="about-content">
+                        <h2 class="terminal-title mb-4">> 技术栈</h2>
+                        <div class="tech-stack mb-4">
+                            <div class="tech-item">
+                                <h3 class="h5 terminal-subtitle">> 爬虫技术</h3>
+                                <ul class="list-unstyled terminal-list">
+                                    <li class="mb-2">• Scrapy, Selenium, Playwright</li>
+                                    <li class="mb-2">• 分布式爬虫架构</li>
+                                    <li class="mb-2">• 反爬虫策略与突破</li>
+                                    <li class="mb-2">• 数据清洗与存储</li>
+                                </ul>
+                            </div>
+                            <div class="tech-item">
+                                <h3 class="h5 terminal-subtitle">> 逆向工程</h3>
+                                <ul class="list-unstyled terminal-list">
+                                    <li class="mb-2">• Android/iOS 应用逆向</li>
+                                    <li class="mb-2">• 协议分析与还原</li>
+                                    <li class="mb-2">• 加密算法分析</li>
+                                    <li class="mb-2">• 漏洞挖掘与利用</li>
+                                </ul>
+                            </div>
+                            <div class="tech-item">
+                                <h3 class="h5 terminal-subtitle">> 编程语言</h3>
+                                <ul class="list-unstyled terminal-list">
+                                    <li class="mb-2">• Python (主要开发语言)</li>
+                                    <li class="mb-2">• Java (Android 逆向)</li>
+                                    <li class="mb-2">• JavaScript (Web 逆向)</li>
+                                    <li class="mb-2">• C/C++ (底层分析)</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <h2 class="terminal-title mb-4">> 专业领域</h2>
+                        <div class="expertise mb-4">
+                            <p class="mb-3">作为一名爬虫工程师和逆向工程师，我专注于：</p>
+                            <ul class="list-unstyled terminal-list">
+                                <li class="mb-3">• 大规模数据采集系统的设计与实现</li>
+                                <li class="mb-3">• 复杂网络协议的分析与还原</li>
+                                <li class="mb-3">• 移动应用安全分析与漏洞挖掘</li>
+                                <li class="mb-3">• 反爬虫策略研究与突破</li>
+                                <li class="mb-3">• 自动化测试与性能优化</li>
+                            </ul>
+                        </div>
+
+                        <h2 class="terminal-title mb-4">> 项目经验</h2>
+                        <div class="projects mb-4">
+                            <div class="project-item mb-4">
+                                <h3 class="h5 terminal-subtitle">> 分布式爬虫系统</h3>
+                                <p>设计并实现了一个基于 Scrapy 的分布式爬虫系统，支持：</p>
+                                <ul class="list-unstyled terminal-list">
+                                    <li class="mb-2">• 动态任务分配与负载均衡</li>
+                                    <li class="mb-2">• 智能反爬虫策略</li>
+                                    <li class="mb-2">• 实时数据监控与分析</li>
+                                    <li class="mb-2">• 自动化的数据清洗流程</li>
+                                </ul>
+                            </div>
+                            <div class="project-item mb-4">
+                                <h3 class="h5 terminal-subtitle">> 移动应用安全分析</h3>
+                                <p>开发了一套完整的移动应用安全分析工具链：</p>
+                                <ul class="list-unstyled terminal-list">
+                                    <li class="mb-2">• 自动化脱壳与反编译</li>
+                                    <li class="mb-2">• 敏感信息检测</li>
+                                    <li class="mb-2">• 漏洞扫描与验证</li>
+                                    <li class="mb-2">• 安全报告生成</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <h2 class="terminal-title mb-4">> 给我留言</h2>
+                        <div class="message-section">
+                            <p class="mb-3">如果你对我的工作感兴趣，或者有任何问题，欢迎在下方留言：</p>
+                            <form method="post" action="{% url 'blog:post_detail' 'about' %}">
+                                {% csrf_token %}
+                                <div class="form-group mb-3">
+                                    <textarea name="content" class="form-control terminal-input" rows="4" placeholder="在这里输入你的留言..."></textarea>
+                                </div>
+                                <button type="submit" class="btn terminal-btn">发送留言</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card terminal-card mb-4">
+                <div class="card-header terminal-header">
+                    <h2 class="h4 mb-0">> 技能树</h2>
+                </div>
+                <div class="card-body">
+                    <div class="skill-tree">
+                        <div class="skill-item mb-3">
+                            <div class="d-flex justify-content-between">
+                                <span>爬虫开发</span>
+                                <span>90%</span>
+                            </div>
+                            <div class="progress">
+                                <div class="progress-bar bg-success" role="progressbar" style="width: 90%"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item mb-3">
+                            <div class="d-flex justify-content-between">
+                                <span>逆向工程</span>
+                                <span>85%</span>
+                            </div>
+                            <div class="progress">
+                                <div class="progress-bar bg-success" role="progressbar" style="width: 85%"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item mb-3">
+                            <div class="d-flex justify-content-between">
+                                <span>Python开发</span>
+                                <span>95%</span>
+                            </div>
+                            <div class="progress">
+                                <div class="progress-bar bg-success" role="progressbar" style="width: 95%"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item mb-3">
+                            <div class="d-flex justify-content-between">
+                                <span>安全分析</span>
+                                <span>80%</span>
+                            </div>
+                            <div class="progress">
+                                <div class="progress-bar bg-success" role="progressbar" style="width: 80%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

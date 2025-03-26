@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load account socialaccount %}
+{% load static %}
+
+{% block title %}> 登录{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card terminal-card">
+                <div class="card-header terminal-header text-center">
+                    <h1 class="h3 mb-0">> 登录</h1>
+                </div>
+                <div class="card-body">
+                    {% get_providers as socialaccount_providers %}
+                    {% if socialaccount_providers %}
+                    <div class="socialaccount_ballot mb-4">
+                        <div class="socialaccount_providers">
+                            {% include "socialaccount/snippets/provider_list.html" with process="login" %}
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    <form class="login" method="POST" action="{% url 'account_login' %}">
+                        {% csrf_token %}
+                        {% if redirect_field_value %}
+                        <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+                        {% endif %}
+                        
+                        <div class="mb-3">
+                            <label for="id_login" class="form-label terminal-label">> 用户名</label>
+                            <input type="text" name="login" id="id_login" class="form-control terminal-input" required>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="id_password" class="form-label terminal-label">> 密码</label>
+                            <input type="password" name="password" id="id_password" class="form-control terminal-input" required>
+                        </div>
+                        
+                        <div class="mb-3 form-check">
+                            <input type="checkbox" name="remember" id="id_remember" class="form-check-input terminal-checkbox">
+                            <label class="form-check-label terminal-label" for="id_remember">> 记住我</label>
+                        </div>
+
+                        {% if form.errors %}
+                        <div class="alert terminal-alert alert-danger">
+                            {% for error in form.non_field_errors %}
+                            <p class="mb-0">> {{ error }}</p>
+                            {% endfor %}
+                            {% for field in form %}
+                            {% for error in field.errors %}
+                            <p class="mb-0">> {{ error }}</p>
+                            {% endfor %}
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+
+                        <div class="d-grid gap-2">
+                            <button class="btn terminal-btn" type="submit">> 登录</button>
+                        </div>
+                    </form>
+
+                    <div class="mt-4 text-center">
+                        <p class="mb-2">
+                            <a href="{% url 'account_reset_password' %}" class="terminal-link">> 忘记密码？</a>
+                        </p>
+                        <p class="mb-0">
+                            > 还没有账号？
+                            <a href="{% url 'account_signup' %}" class="terminal-link">> 立即注册</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 
